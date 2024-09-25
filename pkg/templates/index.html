@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data-Backup</title>
+    <style>
+        #progress {
+            width: 100%;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            height: 30px;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: #4caf50;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+            /* Adjust based on progress bar height */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Database Backup</h1>
+    <form id="backupForm">
+        <label for="db_type">Database Type:</label><br>
+        <input type="text" id="db_type" name="db_type" placeholder="e.g. postgres, mysql, mongodb" required><br><br>
+
+        <label for="db_host">Host:</label><br>
+        <input type="text" id="db_host" name="db_host" placeholder="e.g. localhost" required><br><br>
+
+        <label for="db_port">Port:</label><br>
+        <input type="text" id="db_port" name="db_port" placeholder="e.g. 5432" required><br><br>
+
+        <label for="db_user">User:</label><br>
+        <input type="text" id="db_user" name="db_user" placeholder="e.g. admin" required><br><br>
+
+        <label for="db_password">Password:</label><br>
+        <input type="password" id="db_password" name="db_password" placeholder="Password" required><br><br>
+
+        <label for="db_name">Database Name:</label><br>
+        <input type="text" id="db_name" name="db_name" placeholder="Database name" required><br><br>
+
+        <button type="button" onclick="startBackup()">Start Backup</button>
+    </form>
+
+    <div id="progress" style="display:none;">
+        <div id="progress-bar">0%</div>
+    </div>
+    <a id="downloadLink" style="display:none;" href="#" download>Download Backup</a>
+
+    <script>
+        function startBackup() {
+            const formData = new FormData(document.getElementById('backupForm'));
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/start-backup', true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+            xhr.upload.onprogress = function (event) {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.round((event.loaded / event.total) * 100);
+                    document.getElementById('progress').style.display = 'block';
+                    document.getElementById('progress-bar').style.width = percentComplete + '%';
+                    document.getElementById('progress-bar').innerText = percentComplete + '%';
+                }
+            };
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    document.getElementById('downloadLink').href = '/download-backup?file=' + encodeURIComponent(response.filename);
+                    document.getElementById('downloadLink').style.display = 'block';
+                } else {
+                    alert('Backup failed. Please try again.');
+                }
+            };
+
+            xhr.send(formData);
+        }
+    </script>
+</body>
+
+</html>
