@@ -8,3 +8,9 @@ type DbConfig struct {
 	DbName     string
 	DbSslMode  string
 }
+
+type Helper struct {
+	TimeStamp   string
+	BackupFile  string
+	RestoreFile string
+}
