@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"github.com/parthvinchhi/db-backup/pkg/routes"
+)
 
 func main() {
-	fmt.Println("New project.")
+	r := routes.Routes()
+
+	r.Run(":8080")
 }
