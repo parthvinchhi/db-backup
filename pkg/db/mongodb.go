@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/parthvinchhi/db-backup/pkg/models"
@@ -41,5 +42,15 @@ func (m *MongoDB) ConnectMongoDb() error {
 
 	m.client = client
 
+	log.Println("Connected to MySQL successfully")
+
+	return nil
+}
+
+func (m *MongoDB) BackUpMongoDBData() error {
+	return nil
+}
+
+func (m *MongoDB) RestoreMongoDBData() error {
 	return nil
 }

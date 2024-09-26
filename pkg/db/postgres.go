@@ -47,6 +47,8 @@ func (p *Postgres) ConnectPostgreSQL() error {
 		}
 	}
 
+	log.Printf("Connected to database successfully.")
+
 	p.db = db
 
 	return nil
@@ -88,9 +90,9 @@ func (p *Postgres) RestorePostgreSQLData(filePath string) error {
 	// Restore the backup by executing raw SQL
 	err = p.db.Exec(string(sqlContent)).Error
 	if err != nil {
-		fmt.Println("Failed to restore the backup:", err)
+		log.Printf("Failed to restore the backup: %v", err)
 	} else {
-		fmt.Println("Backup restored successfully")
+		log.Printf("Backup restored successfully")
 	}
 
 	return nil

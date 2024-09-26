@@ -35,3 +35,11 @@ func (m *MySQL) ConnectMySQL() error {
 	log.Println("Connected to MySQL successfully")
 	return nil
 }
+
+func (m *MySQL) BackUpMySQLData() error {
+	return nil
+}
+
+func (m *MySQL) RestoreMySQLData(fileName string) error {
+	return nil
+}
