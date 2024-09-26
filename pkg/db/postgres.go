@@ -55,7 +55,7 @@ func (p *Postgres) ConnectPostgreSQL() error {
 }
 
 func (p *Postgres) BackUpPostgreSQLData() error {
-	p.Helper.TimeStamp = time.Now().Format("20060102_150405")
+	p.Helper.TimeStamp = time.Now().Format("02012006_150405")
 	p.Helper.BackupFile = fmt.Sprintf("%s_backup_%s.sql", p.Config.DbName, p.Helper.TimeStamp)
 
 	// Construct the pg_dump command
