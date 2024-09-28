@@ -10,6 +10,10 @@ func Routes() *gin.Engine {
 
 	r.POST("/postgres/backup", handlers.BackupPostgreSQLHandler)
 	r.POST("/postgres/restore", handlers.RestorePostgreSQLHandler)
+	r.POST("/mysql/backup", handlers.BackupMySQLHandler)
+	r.POST("/mysql/restore", handlers.RestoreMySQLHandler)
+	r.POST("/mongodb/backup", handlers.BackupMongoDBHandler)
+	r.POST("/mongodb/restore", handlers.RestoreMongoDBHandler)
 
 	return r
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/parthvinchhi/db-backup/pkg/utils"
 )
 
-func BackupPostgreSQLHandler(c *gin.Context) {
+func BackupMySQLHandler(c *gin.Context) {
 	dbConfig := utils.GetDbConfigFromForm(c)
 
 	// Validate if all required fields are provided
@@ -18,16 +18,16 @@ func BackupPostgreSQLHandler(c *gin.Context) {
 	}
 
 	// Call the function to perform backup or any other operation
-	postgres := db.Postgres{
+	mysql := db.MySQL{
 		Config: dbConfig,
 	}
 
-	if err := postgres.ConnectPostgreSQL(); err != nil {
+	if err := mysql.ConnectMySQL(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := postgres.BackUpPostgreSQLData()
+	err := mysql.BackUpMySQLData()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -37,32 +37,30 @@ func BackupPostgreSQLHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Backup successful"})
 }
 
-func RestorePostgreSQLHandler(c *gin.Context) {
+func RestoreMySQLHandler(c *gin.Context) {
 	dbConfig := utils.GetDbConfigFromForm(c)
-	backupFile := c.Request.FormValue("backup_file") // Fetching backup file path
+	backupFile := c.Request.FormValue("backup_file")
 
-	// Validate if all required fields are provided
 	if dbConfig.DbHost == "" || dbConfig.DbUser == "" || dbConfig.DbPort == "" || dbConfig.DbPassword == "" || dbConfig.DbName == "" || backupFile == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required details"})
 		return
 	}
 
-	// Call the function to perform restore
-	postgres := db.Postgres{
+	// Create MySQL instance and restore data
+	mysql := db.MySQL{
 		Config: dbConfig,
 	}
 
-	if err := postgres.ConnectPostgreSQL(); err != nil {
+	if err := mysql.ConnectMySQL(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := postgres.RestorePostgreSQLData(backupFile)
+	err := mysql.RestoreMySQLData(backupFile)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Send a success response
 	c.JSON(http.StatusOK, gin.H{"message": "Restore successful"})
 }
