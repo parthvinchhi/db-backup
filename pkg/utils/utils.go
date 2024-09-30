@@ -15,3 +15,5 @@ func GetDbConfigFromForm(c *gin.Context) models.DbConfig {
 		DbSslMode:  c.Request.FormValue("DbSslMode"),
 	}
 }
+
+
