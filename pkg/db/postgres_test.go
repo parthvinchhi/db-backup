@@ -68,13 +68,13 @@ func TestConnectPostgreSQL(t *testing.T) {
 
 func TestPostgres_BackUpPostgreSQLData(t *testing.T) {
 	// Mock the exec.Command
-	execCommand := exec.Command
-	defer func() { exec.Command = execCommand }()
+	// execCommand := exec.Command
+	// defer func() { exec.Command = execCommand }()
 
-	exec.Command = func(name string, args ...string) *exec.Cmd {
-		// Simulate successful command execution
-		return &exec.Cmd{}
-	}
+	// exec.Command = func(name string, args ...string) *exec.Cmd {
+	// 	// Simulate successful command execution
+	// 	return &exec.Cmd{}
+	// }
 
 	// Mock Postgres instance with DbConfig and Helper
 	mockPostgres := &Postgres{
