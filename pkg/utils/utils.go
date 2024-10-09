@@ -7,6 +7,7 @@ import (
 
 func GetDbConfigFromForm(c *gin.Context) models.DbConfig {
 	return models.DbConfig{
+		DbType:     c.Request.FormValue("DbType"),
 		DbHost:     c.Request.FormValue("DbHost"),
 		DbUser:     c.Request.FormValue("DbUser"),
 		DbPort:     c.Request.FormValue("DbPort"),
@@ -15,5 +16,3 @@ func GetDbConfigFromForm(c *gin.Context) models.DbConfig {
 		DbSslMode:  c.Request.FormValue("DbSslMode"),
 	}
 }
-
-

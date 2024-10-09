@@ -12,7 +12,7 @@ import (
 )
 
 func validateDbConfig(dbConfig *models.DbConfig) bool {
-	return dbConfig.DbHost != "" || dbConfig.DbUser != "" || dbConfig.DbPort != "" ||
+	return dbConfig.DbType != "" || dbConfig.DbHost != "" || dbConfig.DbUser != "" || dbConfig.DbPort != "" ||
 		dbConfig.DbPassword != "" || dbConfig.DbName != "" || dbConfig.DbSslMode != ""
 }
 
@@ -77,12 +77,12 @@ func RestorePostgreSQLHandler(c *gin.Context) {
 		Config: dbConfig,
 	}
 
-	if err := postgres.ConnectPostgreSQL(); err != nil {
+	if err := postgres.ConnectPostgreSQL(c); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := postgres.RestorePostgreSQLData(backupFile)
+	err := postgres.RestorePostgreSQLData(c, backupFile)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

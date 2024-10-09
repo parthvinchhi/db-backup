@@ -1,6 +1,7 @@
 package models
 
 type DbConfig struct {
+	DbType     string
 	DbHost     string
 	DbUser     string
 	DbPort     string
